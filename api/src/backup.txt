@@ -1,0 +1,39 @@
+server.get('/climaAtual/:estado', async (req,resp) => {
+
+    const nome = req.params.estado
+
+    try {
+        const chamada = await rota.get(`/current.json?key=cd505201f6524c0abe0173741230304&q=Sao_Paulo&`)
+        resp.send(chamada.data)
+    } catch (error) {
+        resp.status(404).send ({
+            erro: error.message
+        })
+    }
+})
+
+    useEffect(() => {
+        renderizarPokemon()
+    }, [infoPokemon])
+
+
+
+            <h1> {infoPokemon ?  "pika" : 'nome'} </h1> 
+        <h1> {infoPokemon ? infoPokemon.retorno.id : 'id'}</h1>
+        <h1> {infoPokemon ? infoPokemon.retorno.id : 'id'}</h1>
+        <img src={infoPokemon ? infoPokemon.retorno.sprites.front_default : 'semcaminho'}></img>
+        <input type='text' value={inputNome} onChange={e => setInputNome(e.target.value)}></input>
+        <button onClick={procura}>clique</button>
+
+
+           async function chamadaApi () {
+        try {
+            const dados = await axios.get(`http://localhost:3030/consulta/pokemon/${inputNome}`)
+            setInfoPokemon(dados.data)
+            renderizarPokemon(dados.data)
+        } catch (error) {
+            console.log(error.message)
+        }
+        console.log(infoPokemon) 
+        
+       
