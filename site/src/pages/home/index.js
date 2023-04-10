@@ -18,6 +18,12 @@ export default function Home() {
     const [tipo, setTipo] = useState('')
     const [texto, setText] = useState('');
     const [texto2, setText2] = useState('');
+    const [evolucaoPassada, setEvolucaoPassada] = useState() 
+
+    //- render todop pokemons
+    const [pokemons, setPokemons] = useState([])
+    const [pokemonCarregado, setPokemonCarregado] = useState([])
+    //-
 
     const [firstLoad, setFirstLoad] = useState(true);
 
@@ -36,14 +42,53 @@ export default function Home() {
 
     const getSpecies  = async () => {
         try {
-            const dados = await axios.get(`http://localhost:3030/consulta/pokemon/species/${inputNome}`)
+            const dados = await axios.get(`http://localhost:3030/consulta/species/${inputNome}`)
             renderizarSpecies(dados.data)
-          
-
         } catch (error) {
             console.log(error.message)
         }
     }
+
+    async function carregarTodos () {
+        try {
+            const dados = await axios.get(`http://localhost:3030/consulta/pokemon`)
+
+            setPokemons(dados.data)
+           
+            
+           
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    async function carregaUm () {
+        try {
+            const ar = [];
+            for(let i = 0; i < pokemons.length; i++) {
+                const p = await axios.get(`http://localhost:3030/consulta/species/${pokemons[i].name}`)
+                ar.push(p.data)
+              
+            }
+            setPokemonCarregado(ar);
+            
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+
+
+
+
+
+    useEffect(() => {
+        carregarTodos()
+        carregaUm()
+        
+        console.log(pokemonCarregado)
+          
+    }, [])
  
 
 
@@ -62,14 +107,17 @@ export default function Home() {
         setLargura(pokemonDados.retorno.weight)
         setId(pokemonDados.retorno.id)
         setTipo(pokemonDados.retorno['types'][0]['type']['name'])
+       
     }
 
     const renderizarSpecies = async (dadosEspecie) => {
         setText(dadosEspecie['flavor_text_entries']['0']['flavor_text'])
         setText2(dadosEspecie['flavor_text_entries']['3']['flavor_text'])
         setHabitat(dadosEspecie['habitat']['name'])
-        console.log(dadosEspecie)
+    
     }
+
+
 
     return (
         <main className='Home flexbox-column'>
@@ -95,17 +143,17 @@ export default function Home() {
                                 </div>
                                 <div className="agrupamentoLabel">
                                     <span className='box-information'>alt: {altura}</span>
-                                    <span className='box-information'>lar: {largura}</span>    
+                                    <span className='box-information'>lar: {largura}</span>   
                                 </div>
                             </div>                    
                     }
                  
                 </div>
                 <div className="pokemon-side-information adjust-right">
-                    <p className='align-items-center'>{texto ? texto2 : 'Projeto Pokedex!' }</p>
+                    <p className='align-items-center'>{texto ? texto : 'Projeto Pokedex!' }</p>
                 </div>
             </div>
-
+            
             <div className="container-pokemons">
                 <div className="border-left-top"></div>
                 <div className="pesquisa align-items-center">
@@ -114,6 +162,18 @@ export default function Home() {
                 </div>
                 <div className="border-left-top"></div>
             </div>
+
+            <div className="container-Monstruario">
+                {pokemonCarregado.map ( pokemon => 
+                    <div className="pokemon-div-info">
+                        <p>{pokemon.name}</p>
+                        <p>{pokemon.id}</p>
+                        <img></img>
+                    </div>    
+                )}
+                
+            </div>
+          
         </main>
     )
 }

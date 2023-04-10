@@ -15,16 +15,16 @@
     }
 
     .pokemon-side-information {
-        background-color: rgb(193, 133, 193);
+        border-radius: 20px;
+        background-color: rgb(251, 200, 245);
         font-size: 1rem;
-        padding: 10px;
+        padding: 20px;
         width: 17rem;
-        border: 4px solid rgb(255, 0, 106) ;
-       
     }
+    
     .box-information {
         background-color: rgb(255, 255, 255);
-        height: 1.5rem;
+        height: 2rem;
         width: 5rem;
         padding: 10px;
         border-radius: 7px;
@@ -85,10 +85,17 @@
         display: flex;
         flex-direction: column;
         align-items: center !important;
-        background-color: rgb(193, 133, 193);
+        
         width: 22rem;
         height: 22rem;
         border-radius: 22rem;
+
+        background: linear-gradient(267deg, #de92fb, #b963ff, #d5c9df);
+        background-size: 250% 100%;
+    
+        -webkit-animation: AnimationName1 5s ease infinite;
+        -moz-animation: AnimationName2 5s ease infinite;
+        animation: AnimationName3 5s ease infinite;
     }
 
     .div-agrega {
@@ -109,7 +116,7 @@
 
     .container-pokemons {
         width: 100%;
-        height: 45%;
+        height: 10%;
         background-color: rgb(78, 77, 77);;
         display: flex;
         flex-direction: row;
@@ -156,6 +163,54 @@
                 width: 25%;
             }
         }
+    }
+
+    .sejecolumn {
+
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    .container-Monstruario {
+        background-color: red;
+        width: 100%;
+        display: flex;
+        padding: 1rem;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+
+    }
+
+    .pokemon-div-info {
+        padding: 10px;
+
+        width: 10rem;
+        height: 10rem;
+        background-color: white;
+        border-radius: 25px;
+        flex-wrap: wrap;
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    @-webkit-keyframes AnimationName1 {
+        0%{background-position:51% 0%}
+        50%{background-position:50% 100%}
+        100%{background-position:51% 0%}
+    }
+    @-moz-keyframes AnimationName2 {
+        0%{background-position:51% 0%}
+        50%{background-position:50% 100%}
+        100%{background-position:51% 0%}
+    }
+    @keyframes AnimationName3 {
+        0%{background-position:51% 0%}
+        50%{background-position:50% 100%}
+        100%{background-position:51% 0%}
     }
 
 

@@ -32,12 +32,23 @@ server.get('/consulta/pokemon/:namePokemon', async (req,resp) => {
         })
     }
 })
+server.get('/consulta/pokemon', async (req,resp) => {
+    try{
+ 
+    const apiCall = await urlBase.get(`/pokemon?limit=5`)
+    resp.send(apiCall.data.results)
+    } catch(error) {
+        resp.status(404).send({
+            error: "Ocorreu um erro " + error.message
+        })
+    }
+})
 
-server.get('/consulta/pokemon/species/:namePokemon', async (req,resp) =>  {
+server.get('/consulta/species/:namePokemon', async (req,resp) =>  {
     try {
-        const namePokemon = req.params.namePokemon
+        const {namePokemon} = req.params
 
-        const chamadaApi = await urlBase.get('pokemon-species/'+namePokemon)
+        const chamadaApi = await urlBase.get(`/pokemon-species/${namePokemon}/`)
         resp.send(chamadaApi.data)
 
     } catch (error) {
