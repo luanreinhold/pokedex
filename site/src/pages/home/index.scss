@@ -2,12 +2,12 @@
 
     
     display: flex;
-    background-color: rgb(48, 48, 48);
+    background-color: #fb3b3bfd;
 
 
     .pokemon-box {
         width: 100%;
-        background-color: rgb(56, 56, 56);
+        background-color: #fb3b3bfd;
         height: 85vh;
         display: flex;
         justify-content: center;
@@ -20,8 +20,9 @@
     }
 
     .pokemon-side-information {
+        
         border-radius: 20px;
-        background-color: rgb(251, 200, 245);
+        background-color: rgb(197, 197, 197);
         font-size: 1rem;
         padding: 20px;
         width: 17rem;
@@ -84,6 +85,9 @@
     }
 
     .pokemon-card {
+        background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/57c65d5f-1d28-4bab-a4cc-564d0126d063/d7z0h0p-2db211c9-d53a-4d78-aa65-7dcf1d25b4fb.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzU3YzY1ZDVmLTFkMjgtNGJhYi1hNGNjLTU2NGQwMTI2ZDA2M1wvZDd6MGgwcC0yZGIyMTFjOS1kNTNhLTRkNzgtYWE2NS03ZGNmMWQyNWI0ZmIuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.HHbzm5QL_E49lnfwHYJNQPsWPW7CIX99uiiFwY7fmRA');
+        background-repeat: no-repeat;
+        
         position: static;
         padding: 1rem;
         border: 1px solid black;
@@ -94,13 +98,26 @@
         width: 22rem;
         height: 22rem;
         border-radius: 22rem;
-
-        background: linear-gradient(267deg, #de92fb, #b963ff, #d5c9df);
-        background-size: 250% 100%;
+        background-color: rgb(93, 93, 93) !important;
+        // background: linear-gradient(267deg, #de92fb, #b963ff, #d5c9df);
+        // background-size: 250% 100%;
     
-        -webkit-animation: AnimationName1 5s ease infinite;
-        -moz-animation: AnimationName2 5s ease infinite;
-        animation: AnimationName3 5s ease infinite;
+        // -webkit-animation: AnimationName1 5s ease infinite;
+        // -moz-animation: AnimationName2 5s ease infinite;
+        // animation: AnimationName3 5s ease infinite;
+    }
+
+    #background-space {
+        
+    }
+
+    .agrup {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+  
+        width: 100%;
+        flex-wrap: wrap;
     }
 
     .div-agrega {
@@ -123,16 +140,17 @@
         display: flex;
         flex-direction: row;
         width: 100%;
-        height: 8rem;
-        background-color: antiquewhite;
+        height: 10rem;
+        padding: 1rem;
+        background-color: #000000;
 
         .filtroOption {
             
             margin: 1rem;
             width: 5rem;
             height: 2rem;
-            background-color: rgb(167, 167, 167);
-            border: 1px solid black;
+            background-color: rgb(255, 255, 255);
+            border-style: none;
         }
 
         .buttonsContainer {
@@ -142,39 +160,33 @@
             flex-direction: row;
          
         }
+
+        .filtroOption:hover {
+            cursor: pointer;
+            background-color: rgba(219, 219, 219, 0.739);
+        }
     }
 
     .container-pokemons {
         width: 100%;
-        height: 10%;
-        background-color: rgb(78, 77, 77);;
+        height: 5rem;
         display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        
-        .border-left-top, .border-right-top {
-            width: 35%;
+        justify-content: center;
          
-            height: 3rem;
-            border-top: 1px solid black;
-        }
+        background-color: #fb3b3bfd;;
 
         
-
         .pesquisa {
-            border-bottom: 1px solid black;
-            border-right: 1px solid black;
-            border-left: 1px solid black;
-            width: 30%;
+            width: 25rem;
+
             padding: 10px;
-            background-color: rgb(56, 56, 56);
+            
             display: flex;
-    
+
             input {
-                
                 padding: 10px;
                 height: 2.5rem;
-                width: 35%;
+                width: 10rem;
                 border-radius: 5px;
                 border-inline: none;
                 border-style: none;

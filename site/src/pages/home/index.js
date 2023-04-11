@@ -8,7 +8,7 @@ import axios from 'axios';
 export default function Home() {
 
     const [infoPokemon, setInfoPokemon] = useState();
-    const [inputNome, setInputNome] = useState('1')
+    const [inputNome, setInputNome] = useState('')
     const [nome, setNome] = useState()
     const [urlImagem, setUrImagem] = useState('')
     const [id, setId] = useState('')
@@ -20,6 +20,9 @@ export default function Home() {
     const [texto2, setText2] = useState('');
     const [evolucaoPassada, setEvolucaoPassada] = useState() 
 
+    const [erro, setErro] = useState('')
+    let mensagem = 'Projeto Pokedex!\n by: Luan Reinhold'
+
     //- render todop pokemons
     const [pokemons, setPokemons] = useState([])
     const [pokemonCarregado, setPokemonCarregado] = useState([])
@@ -27,23 +30,26 @@ export default function Home() {
     //-
     const [pokemonFiltrado, setPokemonFiltrado] = useState([])
     const [firstLoad, setFirstLoad] = useState(true);
+    const [exibirFiltrado, setExibirFiltrado] = useState(false);
 
     //-input de pesquisa
     const [elementInput, setElementoInput] = useState('')
 
     async function chamadaApi () {
         try {
-            const dados = await axios.get(`http://localhost:3030/consulta/pokemon/${inputNome}`)
+            const dados = await axios.get(`http://localhost:3030/consulta/pokemon/${inputNome.toLowerCase()}`)
             renderizarPokemon(dados.data)
             setFirstLoad(false)
+            setErro('')
         } catch (error) {
             console.log(error.message)
+            setErro('Pokemon não existente!')
         }
     }
 
     const getSpecies  = async () => {
         try {
-            const dados = await axios.get(`http://localhost:3030/consulta/species/${inputNome}`)
+            const dados = await axios.get(`http://localhost:3030/consulta/species/${inputNome.toLowerCase()}`)
             renderizarSpecies(dados.data)
         } catch (error) {
             console.log(error.message)
@@ -79,7 +85,7 @@ export default function Home() {
     useEffect(() => {
         carregarTodos()
       
-   
+        console.log(pokemonCarregado)
         
     }, [])
 
@@ -108,16 +114,17 @@ export default function Home() {
         const novoPoke = pokemonCarregado.filter(pokemon => pokemon['retorno']['types'][0]['type']['name'] === tipo);
         console.log(novoPoke);
         setPokemonFiltrado(novoPoke);
+        setExibirFiltrado(true)
     }
 
  
 
 
     return (
-        <main className='Home flexbox-column'>
+        <main className='Home font flexbox-column'>
             <div className="pokemon-box">
                 <div className="pokemon-side-information adjust-left">
-                    <p className='align-items-center'>{texto2 ? texto2 : 'Projeto Pokedex!\nLuan Reinhold'}</p>
+                    <p className='align-items-center'>{texto2 ? texto2 : mensagem}</p>
                 </div>
                 <div className="pokemon-card align-items-center">
                     {
@@ -127,8 +134,9 @@ export default function Home() {
                     {
                         firstLoad == false &&
                             <div className="pokemon-information">
-                                <img  src={urlImagem} alt="" />
-                                <div className="agrupamento">
+                                <img src={urlImagem} alt="Imagem de pokemon não disponível" />
+                                
+                                <div className="agrupamento font-color-white">
                                      <h3>{nome}</h3> <p>{id}</p> 
                                 </div>
                                 <div className="agrupamentoLabel">                                
@@ -144,31 +152,30 @@ export default function Home() {
                  
                 </div>
                 <div className="pokemon-side-information adjust-right">
-                    <p className='align-items-center'>{texto ? texto : 'Projeto Pokedex!' }</p>
+                    <p className='align-items-center'>{texto ? texto : 'Projeto Pokedex!\nby:Luan Reinhold' }</p>
                 </div>
             </div>
 
-            <div className="containerDivisor">
-                
-            </div>
+     
             
             <div className="container-pokemons">
-                <div className="border-left-top">
-
-                </div>
+                   
                 <div className="pesquisa align-items-center">
+                     {erro}
                     <input type="text align-items-center" value={inputNome} onChange={e => setInputNome(e.target.value)} placeholder='pesquise aqui' className="text" />
                     <button placeholder='pesquisar' onClick={procura}>Procurar</button>
                 </div>
        
             </div>
             
+            {/* <div className="containerDivisor"></div> */}
+            
             <div className="optionsContainer">
                     
                     <div className="buttonsContainer">
-                    <h3>Filtre por elemento: </h3>
+                    <h3 className='font-color-white'>Filtre por elemento: </h3>
+                    <button className='filtroOption' onClick={() => setExibirFiltrado(false)}>resetar</button>
                     <div className="flexbox-column">
-                        
                         <button className='filtroOption' onClick={() => filtrarPokemonNome('fire')}>fogo</button>
                         <button className='filtroOption' onClick={() => filtrarPokemonNome('water')}>agua</button>
                     </div>
@@ -180,32 +187,47 @@ export default function Home() {
                         <button className='filtroOption' onClick={() => filtrarPokemonNome('poison')}>venenoso</button>
                         <button className='filtroOption' onClick={() => filtrarPokemonNome('rock')}>pedra</button>
                     </div>
-    
+                    
                     
                     </div>
 
-                    <input type="text" placeholder='elemento' value={elementInput} onChange={e => setElementoInput(e.target.value)} />
-                    {elementInput}
+                    {/* <input type="text" placeholder='elemento' value={elementInput} onChange={e => setElementoInput(e.target.value)} />
+                    {elementInput} */}
             </div>
             <div className="container-Monstruario">
-                {pokemonCarregado.map ( pokemon => 
-                    <div className="pokemon-div-info">
-                        <div className="agrupamento">
-                            <p><b>{pokemon.retorno.name}</b></p>
-                            <p>{pokemon.retorno.id}</p>
-                        </div>
-                        <img src={pokemon.retorno['sprites']['front_default']}></img>
-                    </div>    
-                )} 
-                {/* {pokemonFiltrado.map ( pokemon => 
-                    <div className="pokemon-div-info">
-                        <div className="agrupamento">
-                            <p><b>{pokemon.retorno.name}</b></p>
-                            <p>{pokemon.retorno.id}</p>
-                        </div>
-                        <img src={pokemon.retorno['sprites']['front_default']}></img>
-                    </div>    
-                )} */}
+                {exibirFiltrado == false &&
+                <div className='agrup'>
+                         {pokemonCarregado.map ( pokemon => 
+                            <div className="pokemon-div-info">
+                                <div className="agrupamento">
+                                    <p><b>{pokemon.retorno.name}</b></p>
+                                    <p>{pokemon.retorno.id}</p>
+                                </div>
+                                <img src={pokemon.retorno['sprites']['front_default']}></img>
+                            </div>    
+                        )} 
+                </div>
+                } 
+                
+                {exibirFiltrado == true &&
+                    <div className='agrup'>
+                          {pokemonFiltrado.map ( pokemon => 
+                            <div className="pokemon-div-info">
+                                <div className="agrupamento">
+                                    <p><b>{pokemon.retorno.name}</b></p>
+                                    <p>{pokemon.retorno.id}</p>
+                                </div>
+                                <img src={pokemon.retorno['sprites']['front_default']}></img>
+                            </div>    
+                        )} 
+                    </div> 
+                }
+                
+               
+               
+    
+
+         
             </div>
             
           
