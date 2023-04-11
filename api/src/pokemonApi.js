@@ -35,7 +35,7 @@ server.get('/consulta/pokemon/:namePokemon', async (req,resp) => {
 server.get('/consulta/pokemon', async (req,resp) => {
     try{
  
-    const apiCall = await urlBase.get(`/pokemon?limit=5`)
+    const apiCall = await urlBase.get(`/pokemon?limit=60`)
     resp.send(apiCall.data.results)
     } catch(error) {
         resp.status(404).send({
