@@ -1,13 +1,14 @@
 import './index.scss'
 import '../../common/index.css'
-import { testePokemon } from '../../api/config.js'
+
 import { useEffect, useState } from 'react'
 
 import axios from 'axios';
 
 export default function Home() {
 
-    const [infoPokemon, setInfoPokemon] = useState();
+    
+
     const [inputNome, setInputNome] = useState('')
     const [nome, setNome] = useState()
     const [urlImagem, setUrImagem] = useState('')
@@ -18,13 +19,12 @@ export default function Home() {
     const [tipo, setTipo] = useState('')
     const [texto, setText] = useState('');
     const [texto2, setText2] = useState('');
-    const [evolucaoPassada, setEvolucaoPassada] = useState() 
+
 
     const [erro, setErro] = useState('')
     let mensagem = 'Projeto Pokedex!\n by: Luan Reinhold'
 
     //- render todop pokemons
-    const [pokemons, setPokemons] = useState([])
     const [pokemonCarregado, setPokemonCarregado] = useState([])
 
     //-
@@ -33,10 +33,14 @@ export default function Home() {
     const [exibirFiltrado, setExibirFiltrado] = useState(false);
 
     //-input de pesquisa
-    const [elementInput, setElementoInput] = useState('')
+    // const [elementInput, setElementoInput] = useState('')
 
     async function chamadaApi () {
         try {
+            if(inputNome ===  '' || null) {
+                setErro('campo vazio')
+                throw new Error('Campo vazio')
+            }
             const dados = await axios.get(`http://localhost:3030/consulta/pokemon/${inputNome.toLowerCase()}`)
             renderizarPokemon(dados.data)
             setFirstLoad(false)
@@ -84,9 +88,6 @@ export default function Home() {
 
     useEffect(() => {
         carregarTodos()
-      
-        console.log(pokemonCarregado)
-        
     }, [])
 
     const procura = async () => {
@@ -117,25 +118,21 @@ export default function Home() {
         setExibirFiltrado(true)
     }
 
- 
-
-
     return (
         <main className='Home font flexbox-column'>
             <div className="pokemon-box">
                 <div className="pokemon-side-information adjust-left">
-                    <p className='align-items-center'>{texto2 ? texto2 : mensagem}</p>
+                    <p className='align-items-center'>{texto2 ? texto2 : 'Pokedex! by: Luan Reinhold'}</p>
                 </div>
                 <div className="pokemon-card align-items-center">
                     {
-                        firstLoad == true &&
-                            <img src="./src/images/FreeVector-Poke-Ball.png" alt="" />
+                        firstLoad === true &&
+                            <img id='pokeball' src="./src/images/FreeVector-Poke-Ball.png" alt="" />
                     }
                     {
-                        firstLoad == false &&
+                        firstLoad === false &&
                             <div className="pokemon-information">
                                 <img src={urlImagem} alt="Imagem de pokemon não disponível" />
-                                
                                 <div className="agrupamento font-color-white">
                                      <h3>{nome}</h3> <p>{id}</p> 
                                 </div>
@@ -149,19 +146,16 @@ export default function Home() {
                                 </div>
                             </div>                    
                     }
-                 
                 </div>
                 <div className="pokemon-side-information adjust-right">
-                    <p className='align-items-center'>{texto ? texto : 'Projeto Pokedex!\nby:Luan Reinhold' }</p>
+                    <p className='align-items-center'>{texto ? texto : 'Pokedex! by: Luan Reinhold' }</p>
                 </div>
             </div>
 
-     
-            
             <div className="container-pokemons">
                    
                 <div className="pesquisa align-items-center">
-                     {erro}
+                     <b>{erro}</b>
                     <input type="text align-items-center" value={inputNome} onChange={e => setInputNome(e.target.value)} placeholder='pesquise aqui' className="text" />
                     <button placeholder='pesquisar' onClick={procura}>Procurar</button>
                 </div>
@@ -171,31 +165,31 @@ export default function Home() {
             {/* <div className="containerDivisor"></div> */}
             
             <div className="optionsContainer">
-                    
                     <div className="buttonsContainer">
                     <h3 className='font-color-white'>Filtre por elemento: </h3>
                     <button className='filtroOption' onClick={() => setExibirFiltrado(false)}>resetar</button>
-                    <div className="flexbox-column">
+                    <div className="agp-options flexbox-column">
                         <button className='filtroOption' onClick={() => filtrarPokemonNome('fire')}>fogo</button>
-                        <button className='filtroOption' onClick={() => filtrarPokemonNome('water')}>agua</button>
+                        <button className='filtroOption' onClick={() => filtrarPokemonNome('water')}>água</button>
                     </div>
-                    <div className="flexbox-column">
-                        <button className='filtroOption' onClick={() => filtrarPokemonNome('fighthing')}>lutador</button>
+                    <div className="agp-options flexbox-column">
+                        <button className='filtroOption' onClick={() => filtrarPokemonNome('fighting')}>lutador</button>
                         <button className='filtroOption' onClick={() => filtrarPokemonNome('flying')}>voador</button>
                     </div >
-                    <div className='flexbox-column'>
+                    <div className='agp-options flexbox-column'>
                         <button className='filtroOption' onClick={() => filtrarPokemonNome('poison')}>venenoso</button>
                         <button className='filtroOption' onClick={() => filtrarPokemonNome('rock')}>pedra</button>
                     </div>
-                    
-                    
+                    <div className='agp-options flexbox-column'>
+                        <button className='filtroOption' onClick={() => filtrarPokemonNome('normal')}>normal</button>
+                        <button className='filtroOption' onClick={() => filtrarPokemonNome('bug')}>inseto</button>
                     </div>
-
+                    </div>
                     {/* <input type="text" placeholder='elemento' value={elementInput} onChange={e => setElementoInput(e.target.value)} />
                     {elementInput} */}
             </div>
             <div className="container-Monstruario">
-                {exibirFiltrado == false &&
+                {exibirFiltrado === false &&
                 <div className='agrup'>
                          {pokemonCarregado.map ( pokemon => 
                             <div className="pokemon-div-info">
@@ -203,13 +197,12 @@ export default function Home() {
                                     <p><b>{pokemon.retorno.name}</b></p>
                                     <p>{pokemon.retorno.id}</p>
                                 </div>
-                                <img src={pokemon.retorno['sprites']['front_default']}></img>
+                                <img src={pokemon.retorno['sprites']['front_default']} alt='pic pokemon'></img>
                             </div>    
                         )} 
                 </div>
                 } 
-                
-                {exibirFiltrado == true &&
+                {exibirFiltrado === true &&
                     <div className='agrup'>
                           {pokemonFiltrado.map ( pokemon => 
                             <div className="pokemon-div-info">
@@ -217,20 +210,12 @@ export default function Home() {
                                     <p><b>{pokemon.retorno.name}</b></p>
                                     <p>{pokemon.retorno.id}</p>
                                 </div>
-                                <img src={pokemon.retorno['sprites']['front_default']}></img>
+                                <img src={pokemon.retorno['sprites']['front_default']} alt='pic pokemon'></img>
                             </div>    
                         )} 
                     </div> 
                 }
-                
-               
-               
-    
-
-         
             </div>
-            
-          
         </main>
     )
 }
